@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qualtric.ai - AI-Powered Survey Simulation Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e40af;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #1e40af;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #1e40af;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #1e40af;
+            border: 1px solid #1e40af;
+        }
+
+        .btn-secondary:hover {
+            background: #1e40af;
+            color: white;
+        }
+
+        /* Main Content */
+        .page {
+            display: none;
+            padding-top: 80px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+            background: #f9fafb;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: #e0e7ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 4rem 0;
+            background: #1e40af;
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            opacity: 0.9;
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 4rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Process Steps */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: #1e40af;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-weight: 700;
+        }
+
+        /* Pricing Cards */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border-color: #1e40af;
+            transform: scale(1.05);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .pricing-features li {
+            padding: 0.5rem 0;
+            color: #6b7280;
+        }
+
+        .pricing-features li:before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: #f3f4f6;
+        }
+
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: #60a5fa;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Qualtric.ai</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('product')">Product</a></li>
+                <li><a href="#" onclick="showPage('solutions')">Solutions</a></li>
+                <li><a href="#" onclick="showPage('resources')">Resources</a></li>
+                <li><a href="#" onclick="showPage('pricing')">Pricing</a></li>
+                <li><a href="#" onclick="showPage('about')">About Us</a></li>
+                <li><a href="#" onclick="showPage('forum')">Forum</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-secondary">Login</a>
+                <a href="#" class="btn btn-primary">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>AI-Powered Survey Simulation Platform</h1>
+                <p>Predict survey results with 80%+ accuracy before running real experiments with our digital twin technology</p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary btn-large">Start Free Trial</a>
+                    <a href="#" class="btn btn-secondary btn-large">Watch Demo</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3>90-98%</h3>
+                        <p>Qualtrics Survey Coverage</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>80%+</h3>
+                        <p>Prediction Accuracy</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>2,000+</h3>
+                        <p>Digital Twins Available</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>500+</h3>
+                        <p>Questions Analyzed</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Why Choose Qualtric.ai?</h2>
+                    <p>Our platform provides unmatched accuracy and compatibility for survey simulation</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Digital Twin Simulation</h3>
+                        <p>Advanced AI models simulate real human behavior with high accuracy based on comprehensive datasets</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔗</div>
+                        <h3>Qualtrics Compatible</h3>
+                        <p>Seamlessly upload your existing Qualtrics surveys without format conversion or compatibility issues</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h3>Predictive Analytics</h3>
+                        <p>Get detailed insights and predictions before running expensive real-world experiments</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Survey Optimization</h3>
+                        <p>Receive AI-powered recommendations to improve your survey design and response rates</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👥</div>
+                        <h3>Community Forum</h3>
+                        <p>Share results and learn from other researchers' experiences with high-accuracy simulations</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">☁️</div>
+                        <h3>Cloud Platform</h3>
+                        <p>Access your simulations anywhere with our secure, scalable cloud-based subscription service</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Product Page -->
+    <div id="product" class="page">
+        <section class="hero">
+            <div class="container">
+                <h1>Digital Twin Survey Simulation</h1>
+                <p>Cloud-based subscription platform for predictive survey analysis</p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary btn-large">Try Free Demo</a>
+                    <a href="#" class="btn btn-secondary btn-large">Watch Video</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>How It Works</h2>
+                    <p>Simple 4-step process to get accurate survey predictions</p>
+                </div>
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Upload Survey</h3>
+                        <p>Download your Qualtrics survey and upload it to our platform</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Run Simulation</h3>
+                        <p>Our digital twin models simulate thousands of responses</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Get Results</h3>
+                        <p>Receive detailed predictions and analysis reports</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3>Optimize</h3>
+                        <p>Implement AI-powered recommendations to improve your survey</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Solutions Page -->
+    <div id="solutions" class="page">
+        <section class="hero">
+            <div class="container">
+                <h1>Solutions for Every Research Need</h1>
+                <p>Tailored solutions for enterprise marketing teams, academic researchers, and social scientists</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🏢</div>
+                        <h3>Enterprise Marketing</h3>
+                        <p>Optimize customer surveys, market research, and product feedback collection with AI-powered predictions</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎓</div>
+                        <h3>Academic Research</h3>
+                        <p>Enhance social science studies, behavioral economics experiments, and academic survey research</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔬</div>
+                        <h3>Biotech & Healthcare</h3>
+                        <p>Improve patient surveys, clinical research questionnaires, and health behavior studies</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Resources Page -->
+    <div id="resources" class="page">
+        <section class="hero">
+            <div class="container">
+                <h1>Resources & Documentation</h1>
+                <p>Learn about digital twin technology and best practices for survey simulation</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>Research Papers</h3>
+                        <p>Access our published research on digital twin methodology and the Twin-2K-500 dataset</p>
+                        <a href="#" class="btn btn-primary">Download Papers</a>
+                    </div>
+                    <div class="feature-card">
+                        <h3>API Documentation</h3>
+                        <p>Complete guides for integrating Qualtric.ai with your existing research workflows</p>
+                        <a href="#" class="btn btn-primary">View Docs</a>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Best Practices</h3>
+                        <p>Learn how to design better surveys and interpret simulation results effectively</p>
+                        <a href="#" class="btn btn-primary">Read Guides</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Pricing Page -->
+    <div id="pricing" class="page">
+        <section class="hero">
+            <div class="container">
+                <h1>Simple, Transparent Pricing</h1>
+                <p>Choose the plan that fits your research needs</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <h3>Starter</h3>
+                        <div class="price">$99<span style="font-size:1rem;color:#6b7280;">/month</span></div>
+                        <ul class="pricing-features">
+                            <li>Up to 10 simulations per month</li>
+                            <li>Basic analytics dashboard</li>
+                            <li>Email support</li>
+                            <li>Standard accuracy models</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Get Started</a>
+                    </div>
+                    <div class="pricing-card featured">
+                        <h3>Professional</h3>
+                        <div class="price">$299<span style="font-size:1rem;color:#6b7280;">/month</span></div>
+                        <ul class="pricing-features">
+                            <li>Up to 100 simulations per month</li>
+                            <li>Advanced analytics & reporting</li>
+                            <li>Priority support</li>
+                            <li>High-accuracy models</li>
+                            <li>Survey optimization recommendations</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Most Popular</a>
+                    </div>
+                    <div class="pricing-card">
+                        <h3>Enterprise</h3>
+                        <div class="price">Custom</div>
+                        <ul class="pricing-features">
+                            <li>Unlimited simulations</li>
+                            <li>Custom integrations</li>
+                            <li>Dedicated support</li>
+                            <li>Custom accuracy models</li>
+                            <li>White-label solutions</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page">
+        <section class="hero">
+            <div class="container">
+                <h1>About Qualtric.ai</h1>
+                <p>Revolutionizing survey research with AI-powered digital twin technology</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Our Mission</h2>
+                    <p>We're building the future of survey research by making high-quality predictions accessible to every researcher</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Forum Page -->
+    <div id="forum" class="page">
+        <section class="hero">
+            <div class="container">
+                <h1>Community Forum</h1>
+                <p>Share results, ask questions, and learn from fellow researchers</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Join the Conversation</h2>
+                    <p>Connect with researchers sharing high-accuracy simulation results and best practices</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <a href="#">Features</a>
+                    <a href="#">Pricing</a>
+                    <a href="#">API</a>
+                    <a href="#">Integrations</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Solutions</h4>
+                    <a href="#">Enterprise</a>
+                    <a href="#">Academic</a>
+                    <a href="#">Healthcare</a>
+                    <a href="#">Market Research</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <a href="#">Documentation</a>
+                    <a href="#">Research Papers</a>
+                    <a href="#">Best Practices</a>
+                    <a href="#">Support</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <a href="#">About Us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Qualtric.ai. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
